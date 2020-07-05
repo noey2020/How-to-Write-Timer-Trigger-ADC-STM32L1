@@ -1,11 +1,18 @@
+#ifndef _NSC_MAIN_H
+#define _NSC_MAIN_H
+
 #include "stm32l1xx.h"
+#include "nc_stm32l1_rcc.h"
+#include "nc_stm32l1_adc.h"
+#include "nc_defines.h"
+
+volatile uint8_t BACKGROUND =0;                 /* Declare volatile to force compiler to generate code that rereads variable stored in memory & not just in registers */
 volatile uint32_t DEBUG_VAR = 0;
-volatile uint32_t BACKGROUND = 0;
 volatile uint32_t ADC_VAR = 0;
 volatile uint32_t SYSTICK = 0;
 
 volatile uint32_t msTicks = 0;        /* Variable to store millisecond ticks */
-
+#endif
 void init_ADC(void);
 
 void SysTick_Handler(void)
@@ -31,6 +38,15 @@ void init_ADC(void)
 		/* Enable ADC1 clock */
     //RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 	  RCC->APB2ENR |= (1UL << 9);        // Set bit 9 to enable ADC1 peripheral clock 
+
+//    ADC_DeInit(ADC1);                           /* Put everything back to power-on defaults */
+
+//    ADC_InitTypeDef  ADC_InitStructure;         /* Declare typedef pointer ADC_InitTypeDef. line 83 typedef in nc_stm32l1_adc.h */
+
+//    ADC_StructInit(&ADC_InitStructure);         /* Fills each ADC_InitStruct member with its default value. line 283 stm32l1xx_adc.c */
+    //ADC1->CR2 |= ADC_CR2_CONT;                  /* Set bit 1 to enable continuous conversion. Manual configure but auto default in ADC_StructInit */
+ //   ADC_Init(ADC1, &ADC_InitStructure);         /* Initializes the ADCx peripheral according to the specified parameters in the ADC_InitStruct. */
+
 		
     ADC1->CR2 &= ~ADC_CR2_ADON;        /* Clear Bit 0 ADON: A/D Converter ON / OFF. Or ADC1->CR2 |= (0UL << 0); */
 		ADC1->CR2 |= (0UL << 2);           /* Clear Bit 2 ADC_CFG: ADC configuration. 0: Bank A selected for channels ADC_IN0..31. line 1198 ADC_CR2_CFG stm32l1xx.h */
@@ -92,6 +108,6 @@ int main(void){
 
 		
     while(1){
-			BACKGROUND = 0;
+			BACKGROUND = 1;
 		}
 }
