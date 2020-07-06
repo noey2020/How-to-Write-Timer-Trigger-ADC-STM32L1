@@ -59,7 +59,7 @@ void init_ADC(void)
 		
 		ADC1->CR2 |= ADC_CR2_CONT;         /* Enable continuous conversiont */
 		ADC1->CR2 &= ~ADC_CR2_EXTSEL;      /* Clear Bits 27:24 EXTSEL[3:0]: External event select for regular group */
-		ADC1->CR2 |= (7UL << 24);          /* Select 0b0100(0x4): TIM3_TRGO event ADC trigger. Select 0b0111(0x7): TIM3_CC1 event. */
+		ADC1->CR2 |= (4UL << 24);          /* Select 0b0100(0x4): TIM3_TRGO event ADC trigger. Select 0b0111(0x7): TIM3_CC1 event. */
 		
 		/* Configure ADC regular sequence. 1) ADC regular sequence register 1 (ADC_SQR1). Bits 24:20 L[4:0]: Regular channel sequence length. These
        bits are written by software to define the total number of conversions in the regular channel conversion sequence.
@@ -87,15 +87,14 @@ void init_ADC(void)
 
 void init_TIM3(){
 	  /* Configure channel 1 output of timer 3 used as trigger signal of ADC. Square wave output with frequency 1Hz and duty cycle 50% */
-	  RCC->APB1ENR	|= RCC_APB1ENR_TIM3EN;  /* Enable TIM3 clock */
-		TIM3->PSC = 16000000/1000 - 1;    /* 16MHz is default internal clock. Prescaler value */
+	  RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; /* Enable TIM3 clock */
+		TIM3->PSC = 2097000/1000 - 1;     /* 16MHz is default internal clock. Prescaler value */
 		TIM3->ARR = 1000-1;               /* Auto-reload value */
-		
-		TIM3->CCMR1 |= TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2;   /* OC1M = 110 for PWM output mode 1 on channel 1 */
+    TIM3->CCR1 = 499;                 /* Output compare register for channel 1 */
+		TIM3->CCMR1 |= TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1M_0;   /* OC1M = 110 for PWM output mode 1 on channel 1 */
 		TIM3->CCMR1	|= TIM_CCMR1_OC1PE;   /* Enable preload for channel 1 */
 		TIM3->CR1 |= TIM_CR1_ARPE;        /* Auto-reload preload enable */
 	  TIM3->CCER |= TIM_CCER_CC1E;      /* Capture/Compare 1 output enable */
-		TIM3->CCR1 = 499;                 /* Output compare register for channel 1 */	
   	TIM3->EGR |= TIM_EGR_UG;          /* Update Generation, re-initialize timer counter */
 		TIM3->CR1 |= TIM_CR1_CEN;         /* Enable timer 3/counter */
 }
