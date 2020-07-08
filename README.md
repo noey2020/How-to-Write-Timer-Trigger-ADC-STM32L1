@@ -3,6 +3,8 @@ July 5, 2020
 
 I appreciate comments. Shoot me an email at noel_s_cruz@yahoo.com!
 
+Hire me!
+
 We will study our typedefs to determine how we can "fill in the blanks" into what is need by our adc registers to work properly. The nc_stm32l1_adc.c and nc_stm32l1_adc.h have pre-written defines and function prototypes/implementation to save us time and effort. You always have to refer to the technical reference manua, datasheets, block diagram, and schematics. Unless you don't understand how to deal with pointers and typedef structs, you will be at the mercy of code generators. Code generators are easy but you have a lot of work to do. Example code generators are Cube MX and the like. 
 
 Some helpful posts to keep review: https://github.com/noey2020/How-to-Understand-Interrupts-Timers-Stack-and-Register-File.
@@ -120,6 +122,8 @@ void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct)
 Check this out again, https://github.com/noey2020/How-to-Understand-Interrupts-Timers-Stack-and-Register-File to review.
 
 I appreciate comments. Shoot me an email at noel_s_cruz@yahoo.com!
+
+Hire me!
 
 Hope this helps and happy coding!
 
